@@ -1,39 +1,22 @@
 import dotenv from 'dotenv';
-import { Sequelize } from 'sequelize';
-import Utms from './utms';
-import Users from './users';
-import User_utm_mediums from './user-utm-mediums';
-import User_utm_sources from './user-utm-sources';
+import { Sequelize } from 'sequelize-typescript';
 
 dotenv.config();
 
 const env = process.env.NODE_ENV || 'development';
-import config from '../config/config'
-const db = {};
+import config from '../config/config';
+import { Utms } from './utms';
 
-const sequelize = new Sequelize(config[env].database, config[env].username, config[env].password, {
-  host: config[env].host,
-  dialect: config[env].dialect,
-  timezone: '+09:00',
-  dialectOptions: {
-    charset: 'utf8mb4',
-    dateStrings: true,
-    typeCast: true,
-  },
+const sequelize = new Sequelize({
+  database : config[env].database,
+  dialect : config[env].dialect,
+  username : config[env].username,
+  password : config[env].password,
+  models : [Utms],
 });
 
-db.Utms = Utms(sequelize, Sequelize);
-db.Users = Users(sequelize, Sequelize);
-db.User_utm_mediums = User_utm_mediums(sequelize, Sequelize);
-db.User_utm_sources = User_utm_sources(sequelize, Sequelize);
+sequelize.addModels([Utms]);
 
-Object.keys(db).forEach((modelName) => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
-  }
-});
-
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
+const db = sequelize;
 
 export default db;

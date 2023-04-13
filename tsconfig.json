@@ -10,7 +10,9 @@
     "moduleResolution": "node",
     "baseUrl": "./",
     "paths": {},
-    "esModuleInterop": true
+    "esModuleInterop": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true
   },
   "include": ["./"],
   "exclude": ["./node_modules", "./dist"]

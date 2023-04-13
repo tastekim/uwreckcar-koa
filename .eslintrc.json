@@ -5,7 +5,7 @@
   },
   //  "overrides": [ // 파일 그룹에 대한 구성 파일 내부의 규칙을 비활성화
   //    {
-  //      "files": ["*.ts"],
+  //      "external-file": ["*.ts"],
   //      "rules": {
   //        "strict": ["off"]
   //      }
@@ -67,7 +67,7 @@
     ],
     "no-eq-null": "error",
     "indent": [
-      "error",
+      "off",
       2,
       { "SwitchCase": 1 }
     ],

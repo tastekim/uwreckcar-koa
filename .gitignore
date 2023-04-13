@@ -9,10 +9,10 @@
 .idea/**/dictionaries
 .idea/**/shelf
 
-# Generated files
+# Generated external-file
 .idea/**/contentModel.xml
 
-# Sensitive or high-churn files
+# Sensitive or high-churn external-file
 .idea/**/dataSources/
 .idea/**/dataSources.ids
 .idea/**/dataSources.local.xml
@@ -26,7 +26,7 @@
 .idea/**/libraries
 
 # Gradle and Maven with auto-import
-# When using Gradle or Maven with auto-import, you should exclude module files,
+# When using Gradle or Maven with auto-import, you should exclude module external-file,
 # since they will be recreated, and may cause churn.  Uncomment if using
 # auto-import.
 # .idea/artifacts
@@ -159,7 +159,7 @@ out
 .nuxt
 dist
 
-# Gatsby files
+# Gatsby external-file
 .cache/
 # Comment in the public line in if your project uses Gatsby and not Next.js
 # https://nextjs.org/blog/next-9-1#public-directory-support
@@ -174,7 +174,7 @@ dist
 # FuseBox cache
 .fusebox/
 
-# DynamoDB Local files
+# DynamoDB Local external-file
 .dynamodb/
 
 # TernJS port file
@@ -219,4 +219,4 @@ Temporary Items
 .apdisk
 
 
-
+*.idea/

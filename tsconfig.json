@@ -1,0 +1,17 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "CommonJS",
+    "allowJs": false,
+    "declaration": false,
+    "outDir": "./dist",
+    "isolatedModules": true,
+    "noImplicitAny": true,
+    "moduleResolution": "node",
+    "baseUrl": "./",
+    "paths": {},
+    "esModuleInterop": true
+  },
+  "include": ["./"],
+  "exclude": ["./node_modules", "./dist"]
+}

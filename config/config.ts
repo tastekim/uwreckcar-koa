@@ -15,11 +15,11 @@ const {
 
 const config: Record<string, any> = {
   development : {
-    username : LOCAL_USERNAME,
-    password : LOCAL_PASSWORD,
-    database : LOCAL_DBNAME,
-    host : LOCAL_HOST,
-    dialect : 'mysql',
+    username : `root`,
+    password : `tastekim`,
+    database : `test_uwreckcar_db`,
+    host : `localhost`,
+    dialect : `mysql`,
   },
   test : {
     username : LOCAL_USERNAME,

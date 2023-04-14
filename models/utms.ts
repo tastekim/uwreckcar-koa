@@ -3,7 +3,7 @@ import {
   Column,
   Model,
   BelongsTo,
-  ForeignKey
+  ForeignKey,
 } from 'sequelize-typescript';
 import { Users } from './users';
 import { User_utm_sources } from './user-utm-sources';

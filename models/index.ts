@@ -1,9 +1,10 @@
 import dotenv from 'dotenv';
+
+import { Sequelize } from 'sequelize-typescript';
 import { join } from 'path';
 import {
   SequelizeTypescriptMigration,
 } from 'sequelize-typescript-migration-lts';
-import { Sequelize } from 'sequelize-typescript';
 
 dotenv.config();
 
@@ -13,22 +14,24 @@ import { Utms } from './utms';
 import { Users } from './users';
 import { User_utm_sources } from './user-utm-sources';
 import { User_utm_mediums } from './user-utm-mediums';
+import { Dialect } from 'sequelize';
+
+console.log(config[env]);
 
 const sequelize = new Sequelize({
   repositoryMode : true,
   database : config[env].database,
-  dialect : config[env].dialect,
+  dialect : config[env].dialect as Dialect,
   username : config[env].username,
   password : config[env].password,
   models : [Utms, Users, User_utm_sources, User_utm_mediums],
+  quoteIdentifiers: false,
 });
-
-sequelize.addModels([Utms, Users, User_utm_sources, User_utm_mediums]);
 
 (async () => {
   await SequelizeTypescriptMigration.makeMigration(sequelize, {
     outDir : join(__dirname, './migrations'),
-    migrationName : 'migrationsConfigFile',
+    migrationName : 'init',
     preview : false,
   });
 })();

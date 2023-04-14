@@ -1,10 +1,13 @@
-import db from '../../models/index';
+import sequelize from '../../models/index';
 import crypto from 'crypto';
 import Slack from '../configs/slack.config';
+import { Users } from '../../models/users';
 
-export async function alreadyExists(email: string) {
+const userRepository = sequelize.getRepository(Users);
+
+export async function alreadyExists (email: string) {
   try {
-    const checkDuplicate = await db.Users.findOne({
+    const checkDuplicate = await userRepository.findOne({
       where : {
         email,
       },
@@ -22,11 +25,11 @@ export async function alreadyExists(email: string) {
   }
 }
 
-export async function findUserData(userData) {
+export async function findUserData (email: string) {
   try {
-    const checkUser = await db.Users.findOne({
+    const checkUser = await userRepository.findOne({
       where : {
-        email : userData.kakao_account.email,
+        email,
       },
     });
     return checkUser ? checkUser.dataValues : false;

@@ -1,9 +1,38 @@
-import { Table, Column, Model } from 'sequelize-typescript';
+import { Table, Column, Model, BelongsTo } from 'sequelize-typescript';
+import { Users } from './users';
+import { User_utm_sources } from './user-utm-sources';
+import { User_utm_mediums } from './user-utm-mediums';
 
-@Table({ modelName : 'Utms' })
+@Table({
+  modelName : 'Utms',
+  tableName : 'Utms',
+  createdAt : 'created_at',
+  updatedAt : 'updated_at',
+  timestamps : true,
+})
 export class Utms extends Model {
-  @Column({ primaryKey : true })
+  @Column({ primaryKey : true, autoIncrement : true })
   utm_id: string;
+
+  @BelongsTo(() => Users, { foreignKey : 'user_id', onDelete : 'CASCADE' })
+  @Column
+  user_id: string;
+
+  @BelongsTo(() => User_utm_sources, {
+    foreignKey : 'user_utm_source_id',
+    onDelete : 'CASCADE',
+    as : 'utm_source_name',
+  })
+  @Column
+  user_utm_source_id: string;
+
+  @BelongsTo(() => User_utm_mediums, {
+    foreignKey : 'user_utm_medium_id',
+    onDelete : 'CASCADE',
+    as : 'utm_medium_name',
+  })
+  @Column
+  user_utm_medium_id: string;
 
   @Column
   utm_url: string;

@@ -1,67 +1,49 @@
-import { Model, DataTypes } from 'sequelize';
+import { Table, Column, Model, HasMany } from 'sequelize-typescript';
+import { Utms } from './utms';
+import { User_utm_mediums } from './user-utm-mediums';
+import { User_utm_sources } from './user-utm-sources';
 
-const Users = (sequelize, DataTypes) => {
-    const Users = sequelize.define(
-        'Users',
-        {
-            user_id: {
-                type: DataTypes.INTEGER,
-                primaryKey: true,
-                autoIncrement: true,
-            },
-            username: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            email: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            profile_img: {
-                type: DataTypes.STRING,
-                allowNull: false,
-            },
-            password: {
-                type: DataTypes.STRING,
-            },
-            salt: {
-                type: DataTypes.STRING,
-            },
-            company_name: {
-                type: DataTypes.STRING,
-            },
-            marketing_accept: {
-                type: DataTypes.BOOLEAN,
-            },
-            login_type: {
-                type: DataTypes.STRING,
-            },
-        },
-        {
-            sequelize,
-            modelName: 'Users',
-            tableName: 'Users',
-            createdAt: 'created_at',
-            updatedAt: 'updated_at',
-            timestamps: true,
-        }
-    );
-    Users.associate = (db) => {
-        // db.Users.hasMany(db.User_utm_mediums, {
-        //     foreignKey: 'user_id',
-        //     sourceKey: 'user_id',
-        // });
-        // db.Users.hasMany(db.User_utm_sources, {
-        //     foreignKey: 'user_id',
-        //     sourceKey: 'user_id',
-        // });
-        db.Users.hasMany(db.Utms, {
-            foreignKey: 'user_id',
-            sourceKey: 'user_id',
-        });
-    };
+@Table({
+  modelName : 'Users',
+  tableName : 'Users',
+  createdAt : 'created_at',
+  updatedAt : 'updated_at',
+  timestamps : true,
+})
+export class Users extends Model {
+  @HasMany(() => Utms, { foreignKey : 'user_id', sourceKey : 'user_id' })
+  @HasMany(() => User_utm_mediums, {
+    foreignKey : 'user_id',
+    sourceKey : 'user_id',
+  })
+  @HasMany(() => User_utm_sources, {
+    sourceKey : 'user_id',
+    foreignKey : 'user_id',
+  })
+  @Column({ primaryKey : true, autoIncrement : true })
+  user_id: number;
 
-    return Users;
-};
+  @Column
+  user_name: string;
 
-export default Users;
+  @Column
+  email: string;
+
+  @Column
+  profile_img: string;
+
+  @Column
+  password: string;
+
+  @Column
+  salt: string;
+
+  @Column
+  company_name: string;
+
+  @Column
+  marketing_accept: boolean;
+
+  @Column
+  login_type: string;
+}

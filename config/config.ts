@@ -2,27 +2,38 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const config:Record<string, any> = {
-  development: {
-    username: process.env.LOCAL_USERNAME,
-    password: process.env.LOCAL_PASSWORD,
-    database: process.env.LOCAL_DBNAME,
-    host: process.env.LOCAL_HOST,
-    dialect: process.env.LOCAL_DIALECT,
+const {
+  LOCAL_USERNAME,
+  LOCAL_PASSWORD,
+  LOCAL_DBNAME,
+  LOCAL_HOST,
+  EC2_USERNAME,
+  EC2_PASSWORD,
+  EC2_DBNAME,
+  EC2_HOST,
+} = process.env;
+
+const config: Record<string, any> = {
+  development : {
+    username : LOCAL_USERNAME,
+    password : LOCAL_PASSWORD,
+    database : LOCAL_DBNAME,
+    host : LOCAL_HOST,
+    dialect : 'mysql',
   },
-  test: {
-    username: process.env.LOCAL_USERNAME,
-    password: process.env.LOCAL_PASSWORD,
-    database: process.env.LOCAL_DBNAME,
-    host: process.env.LOCAL_HOST,
-    dialect: process.env.LOCAL_DIALECT,
+  test : {
+    username : LOCAL_USERNAME,
+    password : LOCAL_PASSWORD,
+    database : LOCAL_DBNAME,
+    host : LOCAL_HOST,
+    dialect : 'mysql',
   },
-  production: {
-    username: process.env.EC2_USERNAME,
-    password: process.env.EC2_PASSWORD,
-    database: process.env.EC2_DBNAME,
-    host: process.env.EC2_HOST,
-    dialect: process.env.EC2_DIALECT,
+  production : {
+    username : EC2_USERNAME,
+    password : EC2_PASSWORD,
+    database : EC2_DBNAME,
+    host : EC2_HOST,
+    dialect : 'mysql',
   },
 };
 

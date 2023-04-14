@@ -12,35 +12,32 @@ if (process.env.NODE_ENV === 'production') {
   throw new Error('Not defined process.env.NODE_ENV');
 }
 
-import Koa, { Context } from 'koa';
+import Koa, { Context, Next } from 'koa';
 import { koaBody } from 'koa-body';
 import passport from 'passport';
 import helmet from 'koa-helmet';
 import Sequelize from './models';
 import { run as mongodb } from './src/configs/mongo.config';
-import { kakaoStrategy } from './src/user-manage/kakaoStrategy';
+import { kakaoStrategy } from './src/user-manage/kakao/kakaoStrategy';
 // import cors from '@koa/cors';
 import { utmRouter } from './src/utm-main/utm.routes';
-import { kakaoRouter } from './src/user-manage/user.routes';
+import { kakaoRouter } from './src/user-manage/kakao.routes';
+
+const { SERVER_PORT } = process.env;
 
 const app = new Koa();
 
 // mongoDB initial
-mongodb()
-  .then(() => {
-    console.log('MongoDB connected');
-  })
-  .catch((err) => console.error(err));
+(async () => {
+  await mongodb();
+  console.log('MongoDB connected');
+})();
 
 // MySQL initial
-Sequelize
-  .sync({ force: false })
-  .then(() => {
-    console.log('MySQL connected.');
-  })
-  .catch((err: Error) => {
-    console.error(err);
-  });
+(async () => {
+  await Sequelize.sync({ force : false });
+  console.log('MySQL connected');
+})();
 
 app.use(koaBody());
 app.use(helmet());
@@ -50,14 +47,14 @@ passport.use(kakaoStrategy);
 app.use(utmRouter.routes()).use(utmRouter.prefix('/api/utms').allowedMethods());
 app.use(kakaoRouter.routes()).use(kakaoRouter.prefix('/api/auth/kakao').allowedMethods());
 
-app.on('error', (err: any, ctx: Context) => {
+app.on('error', (err: Error, ctx: Context) => {
   console.log('Error handler');
   console.log(err);
-  ctx.status = err.statusCode | 500;
+  ctx.status = 500;
   ctx.response.body = {
     success : false,
     message : err.message,
   };
 });
 
-app.listen(process.env.PORT, () => console.log(`Server is running on port ${process.env.PORT}`));
+app.listen(SERVER_PORT, () => console.log(`Server is running on port ${SERVER_PORT}`));

@@ -1,11 +1,18 @@
 import { Strategy as KakaoStrategy } from 'passport-kakao';
 import passport from 'passport';
 
+const {
+  REST_API_KEY,
+  CLIENT_SECRET_KEY,
+  REDIRECT_URI,
+  CLIENT_URL,
+} = process.env;
+
 export const kakaoStrategy = new KakaoStrategy(
   {
-    clientID : process.env.REST_API_KEY,
-    clientSecret : process.env.CLIENT_SECRET_KEY,
-    callbackURL : process.env.REDIRECT_URI,
+    clientID : REST_API_KEY,
+    clientSecret : CLIENT_SECRET_KEY,
+    callbackURL : REDIRECT_URI,
   },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -13,7 +20,7 @@ export const kakaoStrategy = new KakaoStrategy(
       return done(null, {
         access_token : accessToken,
         refresh_token : refreshToken,
-        user
+        user,
       });
     } catch (error) {
       return done(error);
@@ -25,6 +32,6 @@ export const kakaoLogin = passport.authenticate('kakao', {
   scope : ['profile_nickname', 'profile_image', 'account_email'],
 });
 export const kakaoCallback = passport.authenticate('kakao', {
-  failureRedirect : `${process.env.CLIENT_URL}`,
+  failureRedirect : `${CLIENT_URL}`,
   session : false,
 });

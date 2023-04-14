@@ -2,9 +2,10 @@ import {
   Table,
   Column,
   Model,
-  ForeignKey,
+  ForeignKey, HasMany,
 } from 'sequelize-typescript';
 import { Users } from './users';
+import { Utms } from './utms';
 
 @Table({
   modelName : 'User_utm_mediums',
@@ -14,6 +15,11 @@ import { Users } from './users';
   timestamps : true,
 })
 export class User_utm_mediums extends Model {
+  @HasMany(() => Utms, {
+    foreignKey : 'user_utm_medium_id',
+    sourceKey : 'user_utm_medium_id',
+    as: 'userUtmMediumId',
+  })
   @Column({ primaryKey : true, autoIncrement : true })
   user_utm_medium_id: number;
 

@@ -1,7 +1,9 @@
 import { MongoClient } from 'mongodb';
 
+const { MONGODB_URI, DB_NAME } = process.env;
+
 // Replace the following with your Atlas connection string
-const url = `${process.env.MONGODB_URI}`;
+const url = `${MONGODB_URI}`;
 const client = new MongoClient(url);
 
 export async function run() {
@@ -16,6 +18,6 @@ export async function run() {
 }
 
 export const drawdb = client.db('withdraw');
-const db = client.db(`${process.env.DB_NAME}`);
+const db = client.db(`${DB_NAME}`);
 
 export default db;

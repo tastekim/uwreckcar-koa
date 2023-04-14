@@ -1,4 +1,10 @@
-import { Table, Column, Model, BelongsTo } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  Model,
+  BelongsTo,
+  ForeignKey
+} from 'sequelize-typescript';
 import { Users } from './users';
 import { User_utm_sources } from './user-utm-sources';
 import { User_utm_mediums } from './user-utm-mediums';
@@ -12,11 +18,11 @@ import { User_utm_mediums } from './user-utm-mediums';
 })
 export class Utms extends Model {
   @Column({ primaryKey : true, autoIncrement : true })
-  utm_id: string;
+  utm_id: number;
 
-  @BelongsTo(() => Users, { foreignKey : 'user_id', onDelete : 'CASCADE' })
+  @ForeignKey(() => Users)
   @Column
-  user_id: string;
+  user_id: number;
 
   @BelongsTo(() => User_utm_sources, {
     foreignKey : 'user_utm_source_id',
@@ -24,7 +30,7 @@ export class Utms extends Model {
     as : 'utm_source_name',
   })
   @Column
-  user_utm_source_id: string;
+  user_utm_source_id: number;
 
   @BelongsTo(() => User_utm_mediums, {
     foreignKey : 'user_utm_medium_id',
@@ -32,7 +38,7 @@ export class Utms extends Model {
     as : 'utm_medium_name',
   })
   @Column
-  user_utm_medium_id: string;
+  user_utm_medium_id: number;
 
   @Column
   utm_url: string;

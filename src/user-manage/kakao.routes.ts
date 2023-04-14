@@ -1,5 +1,5 @@
 import Router from '@koa/router';
-import { kakaoCallback, kakaoLogin } from './kakaoStrategy';
+import { kakaoCallback, kakaoLogin } from './kakao/kakaoStrategy';
 import { Context, Next } from 'koa';
 import { alreadyExists } from './user.module';
 import Slack from '../configs/slack.config';

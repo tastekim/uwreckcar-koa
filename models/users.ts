@@ -11,14 +11,21 @@ import { User_utm_sources } from './user-utm-sources';
   timestamps : true,
 })
 export class Users extends Model {
-  @HasMany(() => Utms, { foreignKey : 'user_id', sourceKey : 'user_id' })
+  @HasMany(() => Utms, {
+    foreignKey : 'user_id',
+    sourceKey : 'user_id',
+    onDelete : 'CASCADE',
+    as : 'utms',
+  })
   @HasMany(() => User_utm_mediums, {
     foreignKey : 'user_id',
     sourceKey : 'user_id',
+    as : 'userUtmMediums',
   })
   @HasMany(() => User_utm_sources, {
     sourceKey : 'user_id',
     foreignKey : 'user_id',
+    as : 'userUtmSources',
   })
   @Column({ primaryKey : true, autoIncrement : true })
   user_id: number;

@@ -1,6 +1,6 @@
 import sequelize from '../../models/index';
 import crypto from 'crypto';
-import Slack from '../configs/slack.config';
+import Slack from '../config/slack.config';
 import { Users } from '../../models/users';
 
 const userRepository = sequelize.getRepository(Users);

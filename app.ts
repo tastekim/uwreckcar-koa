@@ -17,11 +17,11 @@ import { koaBody } from 'koa-body';
 import passport from 'passport';
 import helmet from 'koa-helmet';
 import Sequelize from './models';
-import { run as mongodb } from './src/configs/mongo.config';
-import { kakaoStrategy } from './src/user-manage/kakao/kakaoStrategy';
+import { run as mongodb } from './src/config/mongo.config';
+import { kakaoStrategy } from './src/user/kakao/kakaoStrategy';
 // import cors from '@koa/cors';
-import { utmRouter } from './src/utm-main/utm.routes';
-import { kakaoRouter } from './src/user-manage/kakao.routes';
+import { utmRouter } from './src/utm/utm.routes';
+import { kakaoRouter } from './src/user/kakao.routes';
 
 const { SERVER_PORT } = process.env;
 

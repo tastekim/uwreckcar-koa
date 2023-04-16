@@ -2,7 +2,7 @@ import Router from '@koa/router';
 import { kakaoCallback, kakaoLogin } from './kakao/kakaoStrategy';
 import { Context, Next } from 'koa';
 import { alreadyExists } from './user.module';
-import Slack from '../configs/slack.config';
+import Slack from '../config/slack.config';
 
 const router = new Router();
 

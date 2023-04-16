@@ -1,6 +1,6 @@
 import Router from '@koa/router';
 import { Context, Next } from 'koa';
-import { findUserData } from '../user-manage/user.module';
+import { findUserData } from '../user/user.module';
 
 const router = new Router();
 

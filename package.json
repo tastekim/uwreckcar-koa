@@ -4,6 +4,14 @@
   "engines": {
     "node": "16.16.0"
   },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/tastekim/uwreckcar-koa.git"
+  },
+  "bugs": {
+    "url": "git://github.com/tastekim/uwreckcar-koa.git/issues",
+    "email": "tastekim@kakao.com"
+  },
   "description": "",
   "main": "src/app.ts",
   "private": true,
@@ -12,10 +20,13 @@
     "dev": "NODE_ENV=development nodemon -e ts",
     "start": "npm run types:check && NODE_ENV=production nodemon dist/src/app.js",
     "types:check": "tsc --build",
-    "test": "ts-node -T -r tsconfig-paths/register ./models/index.ts"
+    "db:migrate": "ts-node -T -r tsconfig-paths/register ./models/index.ts"
   },
   "keywords": [],
-  "author": "",
+  "author": {
+    "name": "tastekim",
+    "email": "tastekim@kakao.com"
+  },
   "license": "ISC",
   "dependencies": {
     "@koa/cors": "^4.0.0",

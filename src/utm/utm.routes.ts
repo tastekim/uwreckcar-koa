@@ -1,12 +1,15 @@
 import Router from '@koa/router';
 import { Context, Next } from 'koa';
 import { findUserData } from '../user/user.module';
+import { authentication } from '../util/auth.module';
 
-const router = new Router();
+const router = new Router<{}, Context>();
 
 export const utmRouter = router
-  .get('UTM 전체 조회', '/', async (ctx: Context, next: Next) => {
-    console.log('hi');
-    const result = await findUserData('tttt');
-    ctx.body = result;
+  .use(authentication)
+  .post('UTM 전체 조회', '/', async (ctx: Context, next: Next) => {
+    const { email } = ctx.state.user;
+    const result = await findUserData(email);
+    ctx.body = { result };
+    await next();
   });

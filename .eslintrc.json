@@ -11,7 +11,7 @@
   //      }
   //    }
   //  ],
-  "ignorePatterns": ["./dist", "./node_modules"], // ESLint가 무시할 디렉토리, 파일을 설정
+  "ignorePatterns": ["./dist", "./node_modules", "./models/migrations"], // ESLint가 무시할 디렉토리, 파일을 설정
   "parser": "@typescript-eslint/parser",
   "plugins": [
     "@typescript-eslint",

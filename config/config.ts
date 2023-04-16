@@ -1,7 +1,3 @@
-import dotenv from 'dotenv';
-
-dotenv.config();
-
 const {
   LOCAL_USERNAME,
   LOCAL_PASSWORD,
@@ -15,11 +11,11 @@ const {
 
 const config: Record<string, any> = {
   development : {
-    username : `root`,
-    password : `tastekim`,
-    database : `test_uwreckcar_db`,
-    host : `localhost`,
-    dialect : `mysql`,
+    username : LOCAL_USERNAME,
+    password : LOCAL_PASSWORD,
+    database : LOCAL_DBNAME,
+    host : LOCAL_HOST,
+    dialect : 'mysql',
   },
   test : {
     username : LOCAL_USERNAME,

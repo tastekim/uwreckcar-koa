@@ -11,7 +11,8 @@
     "lint:check": "eslint src/**/*.ts",
     "dev": "NODE_ENV=development nodemon -e ts",
     "start": "npm run types:check && NODE_ENV=production nodemon dist/src/app.js",
-    "types:check": "tsc --build"
+    "types:check": "tsc --build",
+    "test": "ts-node -T -r tsconfig-paths/register ./models/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -42,9 +43,8 @@
     "passport-kakao": "^1.0.1",
     "pm2": "^5.3.0",
     "reflect-metadata": "^0.1.13",
-    "sequelize": "^6.31.0",
-    "sequelize-cli": "^6.6.0",
-    "sequelize-typescript": "^2.1.5",
+    "sequelize": "^5.21.6",
+    "sequelize-typescript": "^1.1.0",
     "sequelize-typescript-migration-lts": "^3.2.5"
   },
   "devDependencies": {
@@ -60,6 +60,8 @@
     "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^2.0.21",
+    "sequelize-cli": "^5.5.1",
+    "sequelize-typescript-migration": "^0.0.1-beta.3",
     "typescript": "^4.9.5"
   }
 }

@@ -32,7 +32,10 @@ export async function findUserData (email: string) {
         email,
       },
     });
-    return checkUser ? checkUser.dataValues : false;
+
+    console.log('checkUser.getDataValue : ', checkUser);
+
+    return checkUser ? checkUser : false;
   } catch (err) {
     console.error('====================user.module.js/findUserData Error.=============================');
     await Slack('findUserData', err);

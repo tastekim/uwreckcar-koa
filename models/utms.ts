@@ -3,7 +3,7 @@ import {
   Column,
   Model,
   BelongsTo,
-  ForeignKey,
+  ForeignKey, DataType,
 } from 'sequelize-typescript';
 import { Users } from './users';
 import { User_utm_sources } from './user-utm-sources';
@@ -66,4 +66,7 @@ export class Utms extends Model {
 
   @Column
   short_id: string;
+
+  @Column({ field : 'created_at' })
+  createdAt: Date;
 }

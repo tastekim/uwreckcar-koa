@@ -59,7 +59,8 @@ export async function authentication(ctx: CustomContext & Context, next: Next)
 
       ctx.state.user = userData;
       ctx.session.user = userData;
-      return next();
+      await next();
+      break;
     }
     case 'google':
       // try {
@@ -118,7 +119,8 @@ export async function authentication(ctx: CustomContext & Context, next: Next)
 
       ctx.state.user = userData;
       ctx.session.user = userData;
-      return next();
+      await next();
+      break;
     }
     default:
       ctx.throw('Invalid token', 400);

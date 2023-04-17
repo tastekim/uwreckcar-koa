@@ -6,26 +6,20 @@ import { Users } from '../../models/users';
 const userRepository = sequelize.getRepository(Users);
 
 export async function alreadyExists(email: string) {
-  try {
-    const checkDuplicate = await userRepository.findOne({
-      where : {
-        email,
-      },
-    });
+  const checkDuplicate = await userRepository.findOne({
+    where : {
+      email,
+    },
+  });
 
-    if (!checkDuplicate) {
-      return false;
-    } else {
-      return checkDuplicate;
-    }
-  } catch (err) {
-    console.error('====================user.module.js/alreadyExists Error.=============================');
-    await Slack('alreadyExists', err);
-    return err;
+  if (!checkDuplicate) {
+    return false;
+  } else {
+    return checkDuplicate;
   }
 }
 
-export async function findUserData (email: string) {
+export async function findUserData(email: string) {
   const checkUser = await userRepository.findOne({
     where : {
       email,

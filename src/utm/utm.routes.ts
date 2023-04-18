@@ -10,7 +10,7 @@ import {
 const router = new Router<{}, Context>();
 
 export const utmRouter = router
-  .use(['/', '/delete'], authentication)
+  .use(authentication)
   .get('UTM 전체 조회', '/', getAllUtmsController)
   .post('UTM 생성', '/', createUtmController)
   .post('UTM 삭제', '/delete', deleteUtmController)

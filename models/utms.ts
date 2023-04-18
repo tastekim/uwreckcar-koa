@@ -3,7 +3,8 @@ import {
   Column,
   Model,
   BelongsTo,
-  ForeignKey, DataType,
+  // eslint-disable-next-line no-unused-vars
+  ForeignKey,
 } from 'sequelize-typescript';
 import { Users } from './users';
 import { User_utm_sources } from './user-utm-sources';

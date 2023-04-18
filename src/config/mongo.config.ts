@@ -6,7 +6,7 @@ const { MONGODB_URI, DB_NAME } = process.env;
 const url = `${MONGODB_URI}`;
 const client = new MongoClient(url);
 
-export async function run() {
+export async function run () {
   try {
     await client.connect();
   } catch (err) {

@@ -9,9 +9,10 @@ import {
 import { getShortUrlClickCount, deleteShortUrl } from '../util/mongo.module';
 import { Utms } from '../../models/utms';
 import fs from 'fs';
-import path from 'path';
 
-export async function getAllUtmsController(ctx: Context, next: Next) {
+// const __dirname = path.resolve();
+
+export async function getAllUtmsController (ctx: Context, next: Next) {
   const { user_id } = ctx.state.user;
   const dateFixResult = await getAllUtms(user_id);
   const result = await Promise.all(
@@ -42,13 +43,13 @@ export async function getAllUtmsController(ctx: Context, next: Next) {
   await next();
 }
 
-export async function createUtmController(ctx: Context, next: Next) {
+export async function createUtmController (ctx: Context, next: Next) {
   const { user_id } = ctx.state.user;
   const requirements = ['utm_source', 'utm_medium', 'utm_campaign_name', 'utm_url'];
-  const utmsData = ctx.request.body.utms;
+  const utmsData = ctx.request.body.data;
 
   // requirements Validation.
-  Object.keys(ctx.request.body).forEach((key) => {
+  Object.keys(ctx.request.body).forEach(key => {
     if (!ctx.request.body[key] && requirements.includes(key)) {
       throw new Error(`Invalid ${key} value.`);
     }
@@ -78,7 +79,7 @@ export async function createUtmController(ctx: Context, next: Next) {
   );
 
   // 에러 객체 여부 확인 후 존재하면 status 500 으로 response
-  const hasError = result.some((item) => item.error);
+  const hasError = result.some(item => item.error);
 
   ctx.assert(!hasError, 400, result);
   ctx.response.body = {
@@ -88,7 +89,7 @@ export async function createUtmController(ctx: Context, next: Next) {
   await next();
 }
 
-export async function deleteUtmController(ctx: Context, next: Next) {
+export async function deleteUtmController (ctx: Context, next: Next) {
   const deleteData = ctx.request.body.data;
   const result = await Promise.all(
     deleteData.map(async (utm: Utms) => {
@@ -107,7 +108,7 @@ export async function deleteUtmController(ctx: Context, next: Next) {
     })
   );
 
-  const hasError = result.some((item) => item.error);
+  const hasError = result.some(item => item.error);
 
   ctx.assert(!hasError, 400, result);
   ctx.response.body = {
@@ -117,24 +118,31 @@ export async function deleteUtmController(ctx: Context, next: Next) {
   await next();
 }
 
-export async function exportExcelFileController(ctx: Context, next: Next) {
+export async function exportExcelFileController (ctx: Context, next: Next) {
   const { user_id } = ctx.state.user;
   const checkDataId = ctx.request.body.data;
   const filename = `${user_id}-${new Date(Date.now()).toISOString().slice(0, 10)}`;
-  await createExcelFile(user_id, filename, checkDataId);
-  ctx.response.attachment(__dirname + `/dist/${filename}.xlsx`);
-  fs.unlink(__dirname + `/dist/${filename}.xlsx`, (err) => {
+  await createExcelFile(filename, checkDataId);
+  ctx.response.attachment(`./temp/${filename}.xlsx`);
+  ctx.set('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+  ctx.response.body = {
+    success : true,
+    data : `./temp/${filename}.xlsx`,
+  };
+  // eslint-disable-next-line promise/prefer-await-to-callbacks
+  fs.unlink(`./temp/${filename}.xlsx`, err => {
     if (err) {
       ctx.throw(err);
     }
   });
+  await next();
 }
 
-export async function exportCSVFileController(ctx: Context, next: Next) {
+export async function exportCSVFileController (ctx: Context, next: Next) {
   const { user_id } = ctx.state.user;
   const checkDataId = ctx.request.body.data;
   const filename = `${user_id}-csv-${new Date(Date.now()).toISOString().slice(0, 10)}`;
-  const csvData = await createCSVFile(filename, checkDataId);
+  const csvData = await createCSVFile(checkDataId);
   ctx.response.set({
     'Content-Type' : 'text/csv',
     'Content-Disposition' : `attachment; filename="${filename}.csv"`,
@@ -143,8 +151,8 @@ export async function exportCSVFileController(ctx: Context, next: Next) {
   await next();
 }
 
-export async function getExternalUtmController(ctx: Context, next: Next) {
-  const { utm_url, created_at, memo } = ctx.request.body;
+export async function getExternalUtmController (ctx: Context, next: Next) {
+  const { utm_url, created_at, memo } = ctx.request.body.data;
   const doc: { [k: string]: string } = {
     created_at,
     utm_memo : memo,
@@ -168,4 +176,5 @@ export async function getExternalUtmController(ctx: Context, next: Next) {
     success : true,
     data : result,
   };
+  await next();
 }

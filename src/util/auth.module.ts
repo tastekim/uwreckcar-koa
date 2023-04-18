@@ -9,12 +9,12 @@ interface CustomContext extends Context {
   session: any;
 }
 
-export async function authentication(ctx: CustomContext & Context, next: Next)
+export async function authentication (ctx: CustomContext & Context, next: Next)
   : Promise<Middleware<DefaultState, DefaultContext, unknown>> {
   const refreshToken = ctx.headers['x-refresh-token'] as string;
 
   // 세션에 사용자 정보가 있는지 확인하고, 있다면 인증을 건너뛰기 - 매 api 요청마다의 인증 생략
-  if (ctx.session.user) {
+  if (!ctx.session.user) {
     ctx.state.user = ctx.session.user;
     return next();
   }
@@ -125,5 +125,4 @@ export async function authentication(ctx: CustomContext & Context, next: Next)
     default:
       ctx.throw('Invalid token', 400);
   }
-  await next();
 }

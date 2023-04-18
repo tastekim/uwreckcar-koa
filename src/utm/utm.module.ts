@@ -11,8 +11,8 @@ const utmMediumRepository = sequelize.getRepository(User_utm_mediums);
 const utmSourceRepository = sequelize.getRepository(User_utm_sources);
 
 // UTM 전체 조회
-export async function getAllUtms(user_id: string) {
-  const result = await utmRepository.findAll({
+export async function getAllUtms (user_id: string) {
+  return utmRepository.findAll({
     where : { user_id },
     include : [
       {
@@ -28,11 +28,10 @@ export async function getAllUtms(user_id: string) {
     ],
     order : [['created_at', 'DESC']],
   });
-  return result;
 }
 
 // User_utm_medium 생성
-export async function createUtmMediums(user_id: number, utm_medium: string) {
+export async function createUtmMediums (user_id: number, utm_medium: string) {
   const checkDuplicate = await utmMediumRepository.findOne({
     where : {
       medium_name : utm_medium,
@@ -51,7 +50,7 @@ export async function createUtmMediums(user_id: number, utm_medium: string) {
 }
 
 // User_utm_source 생성
-export async function createUtmSources(user_id: number, utm_source: string) {
+export async function createUtmSources (user_id: number, utm_source: string) {
   const checkDuplicate = await utmSourceRepository.findOne({
     where : {
       source_name : utm_source,
@@ -70,7 +69,7 @@ export async function createUtmSources(user_id: number, utm_source: string) {
 }
 
 // UTM data 생성
-export async function createUtm(user_id: number, inputVal: any) {
+export async function createUtm (user_id: number, inputVal: any) {
   const user_utm_source_id = await createUtmSources(user_id, inputVal.utm_source);
   const user_utm_medium_id = await createUtmMediums(user_id, inputVal.utm_medium);
 
@@ -107,7 +106,7 @@ export async function createUtm(user_id: number, inputVal: any) {
     throw new Error('Could not make shortUrl.');
   }
 
-  const utmData = await utmRepository.create({
+  return utmRepository.create({
     utm_url,
     utm_campaign_id : utm_campaign_id || '-',
     utm_campaign_name,
@@ -122,22 +121,15 @@ export async function createUtm(user_id: number, inputVal: any) {
     short_id,
     created_at : created_at || Date.now(),
   });
-
-  return utmData;
 }
 
 // UTM 삭제.
-export async function deleteUtm(utm_id: number) {
-  try {
-    const result = await utmRepository.destroy({ where : { utm_id } });
-    return result ? { error : false } : new Error(`invalid utm_id : ${utm_id}`);
-  } catch (err) {
-    console.error(err);
-    return err;
-  }
+export async function deleteUtm (utm_id: number) {
+  const result = await utmRepository.destroy({ where : { utm_id } });
+  return result ? { error : false } : new Error(`invalid utm_id : ${utm_id}`);
 }
 
-export async function createExcelFile(user_id: number, filename: string, data: Array<Utms> & IContent[]) {
+export async function createExcelFile (filename: string, data: Array<Utms> & IContent[]) {
   const sheetData: IJsonSheet[] = [
     {
       sheet : 'MyUTM',
@@ -158,20 +150,20 @@ export async function createExcelFile(user_id: number, filename: string, data: A
     },
   ];
   const settings = {
-    fileName : `./dist/${filename}`,
+    fileName : `./temp/${filename}`,
     extraLength : 11, // A bigger number means that columns will be wider
     writeMode : 'writeFile', // The available parameters are 'WriteFile' and 'write'. This setting is optional. Useful in such cases https://docs.sheetjs.com/docs/solutions/output#example-remote-file
     writeOptions : {}, // Style options from https://docs.sheetjs.com/docs/api/write-options
     RTL : false, // Display the columns from right-to-left (the default value is false)
   };
-  xlsx(sheetData, settings, (sheet) => {
-    console.log(`./dist/${filename}.xlsx file created.`);
+  xlsx(sheetData, settings, () => {
+    console.log(`./temp/${filename}.xlsx file created.`);
   });
 }
 
-export async function createCSVFile(filename: string, data: Array<Utms>) {
+export async function createCSVFile (data: Array<Utms>) {
   const columns: Array<any> = [];
-  Object.keys(data[0]).forEach((col) => {
+  Object.keys(data[0]).forEach(col => {
     columns.push(col);
   });
   let csvData = columns.join(',') + '\r\n';

@@ -1,19 +1,18 @@
 import jwt from 'jsonwebtoken';
-import db from '../../models/index.js';
-import { Utms } from '../../models/utms';
+import { Users } from '../../models/users';
 
 const { JWT_SECRET_KEY } = process.env;
 
 class jwtService {
   // Access Token 생성
-  createAccessToken = (userData: Utms) => {
+  createAccessToken = (userData: Users) => {
     return jwt.sign(userData, JWT_SECRET_KEY, {
       expiresIn : '3h',
     });
   };
 
   // Refresh Token 생성
-  createRefreshToken = (userData: Utms) => {
+  createRefreshToken = (userData: Users) => {
     return jwt.sign(userData, JWT_SECRET_KEY, { expiresIn : '7d' });
   };
 

@@ -5,7 +5,7 @@ import { findUserData } from '../user/user.module';
 import { Middleware } from '@koa/router';
 import axios from 'axios';
 
-interface CustomContext extends Context {
+export interface CustomContext extends Context {
   session: any;
 }
 

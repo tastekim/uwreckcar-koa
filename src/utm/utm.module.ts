@@ -5,14 +5,11 @@ import { User_utm_sources } from '../../models/user-utm-sources';
 import { nanoid } from 'nanoid';
 import axios from 'axios';
 import xlsx, { IContent, IJsonSheet } from 'json-as-xlsx';
-
-const utmRepository = sequelize.getRepository(Utms);
-const utmMediumRepository = sequelize.getRepository(User_utm_mediums);
-const utmSourceRepository = sequelize.getRepository(User_utm_sources);
+import { utmRepo, utmMediumRepo, utmSourceRepo } from '../config/mysql.config';
 
 // UTM 전체 조회
 export async function getAllUtms (user_id: string) {
-  return utmRepository.findAll({
+  return utmRepo.findAll({
     where : { user_id },
     include : [
       {
@@ -32,14 +29,14 @@ export async function getAllUtms (user_id: string) {
 
 // User_utm_medium 생성
 export async function createUtmMediums (user_id: number, utm_medium: string) {
-  const checkDuplicate = await utmMediumRepository.findOne({
+  const checkDuplicate = await utmMediumRepo.findOne({
     where : {
       medium_name : utm_medium,
     },
   });
 
   if (!checkDuplicate) {
-    const result = await utmMediumRepository.create({
+    const result = await utmMediumRepo.create({
       user_id : user_id,
       medium_name : utm_medium,
     });
@@ -51,14 +48,14 @@ export async function createUtmMediums (user_id: number, utm_medium: string) {
 
 // User_utm_source 생성
 export async function createUtmSources (user_id: number, utm_source: string) {
-  const checkDuplicate = await utmSourceRepository.findOne({
+  const checkDuplicate = await utmSourceRepo.findOne({
     where : {
       source_name : utm_source,
     },
   });
 
   if (!checkDuplicate) {
-    const result = await utmSourceRepository.create({
+    const result = await utmSourceRepo.create({
       user_id : user_id,
       source_name : utm_source,
     });
@@ -106,7 +103,7 @@ export async function createUtm (user_id: number, inputVal: any) {
     throw new Error('Could not make shortUrl.');
   }
 
-  return utmRepository.create({
+  return utmRepo.create({
     utm_url,
     utm_campaign_id : utm_campaign_id || '-',
     utm_campaign_name,
@@ -125,7 +122,7 @@ export async function createUtm (user_id: number, inputVal: any) {
 
 // UTM 삭제.
 export async function deleteUtm (utm_id: number) {
-  const result = await utmRepository.destroy({ where : { utm_id } });
+  const result = await utmRepo.destroy({ where : { utm_id } });
   return result ? { error : false } : new Error(`invalid utm_id : ${utm_id}`);
 }
 

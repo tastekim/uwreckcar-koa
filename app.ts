@@ -22,6 +22,7 @@ import { kakaoStrategy } from './src/user/kakao/kakaoStrategy';
 import cors from '@koa/cors';
 import { utmRouter } from './src/utm/utm.routes';
 import { kakaoRouter } from './src/user/kakao.routes';
+import { userRouter } from './src/user/user.routes';
 
 const { SERVER_PORT, SESSION_SECRET_KEY } = process.env;
 
@@ -71,6 +72,7 @@ app.use(async (ctx, next) => {
 passport.use(kakaoStrategy);
 
 app.use(utmRouter.routes()).use(utmRouter.prefix('/api/utms').allowedMethods());
+app.use(userRouter.routes()).use(userRouter.prefix('/api/users').allowedMethods());
 app.use(kakaoRouter.routes()).use(kakaoRouter.prefix('/api/auth/kakao').allowedMethods());
 
 app.on('error', (err: Error, ctx: Context) => {

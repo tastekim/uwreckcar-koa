@@ -70,6 +70,21 @@ export async function sendEmailController (ctx: Context & CustomContext, next: N
   };
 }
 
+// 인증 코드 검증하기
+export async function validateEmailController (ctx: Context & CustomContext, next: Next) {
+  const { verificationCode } = ctx.request.body.data;
+  const { verifyCode } = ctx.session;
+  console.log('fact : ', verifyCode);
+  console.log('user : ', verificationCode);
+
+  ctx.assert(verifyCode === verificationCode, 400, 'Invalid verifyCode');
+  ctx.status = 200;
+  ctx.response.body = {
+    success : true,
+    data : 'Email verified.',
+  };
+}
+
 // uwreckcar 회원 로그인
 export async function signinForCompanyController (ctx: Context, next: Next) {
   const { email, password } = ctx.request.body.data;
